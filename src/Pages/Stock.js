@@ -4,6 +4,8 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import UpdateForm from '../components/UpdateForm';
 import AddProduct from '../components/AddProduct';
+import PieChart from '../components/PieChart';
+
 const styles = {
   table: {
     width: '100%',
@@ -36,12 +38,22 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  button: {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    padding: '8px 16px',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer', 
+  },
 };
 
 export default function Stock() {
   const [showForm, setShowForm] = React.useState(false);
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const [showChart , setShowChart] = React.useState(false);
+
   const handleAdd = (value) => {
     dispatch({ type: 'ADD_STOCK'  , payload:value});
     setShowForm(false);
@@ -63,6 +75,7 @@ export default function Stock() {
   return (
     <div>
       <h1>Stock</h1>
+      <button onClick={() => setShowChart(true)} style={styles.button}>View Chart</button>
       <table style={styles.table}>
         <thead>
           <tr>
@@ -106,6 +119,7 @@ export default function Stock() {
         </div>
       )}
       {showForm && <div  style={styles.overlay}> <AddProduct handleAdd={handleAdd}/></div>}
+      {showChart && <div  style={styles.overlay}> <PieChart setShowChart={setShowChart} /></div>}
     </div>
   );
 }
