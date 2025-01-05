@@ -44,7 +44,7 @@ const styles = {
     padding: '8px 16px',
     border: 'none',
     borderRadius: '4px',
-    cursor: 'pointer', 
+    cursor: 'pointer',
   },
 };
 
@@ -52,12 +52,12 @@ export default function Stock() {
   const [showForm, setShowForm] = React.useState(false);
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
-  const [showChart , setShowChart] = React.useState(false);
+  const [showChart, setShowChart] = React.useState(false);
 
   const handleAdd = (value) => {
-    dispatch({ type: 'ADD_STOCK'  , payload:value});
+    dispatch({ type: 'ADD_STOCK', payload: value });
     setShowForm(false);
-  }
+  };
   const handleDelete = (id) => {
     dispatch({ type: 'DELETE_STOCK', payload: id });
   };
@@ -71,18 +71,20 @@ export default function Stock() {
     setSelectedProduct(product);
     setIsEditing(true);
   };
-  console.log(products);
+
   return (
     <div>
       <h1>Stock</h1>
-      <button onClick={() => setShowChart(true)} style={styles.button}>View Chart</button>
+      <button onClick={() => setShowChart(true)} style={styles.button}>
+        View Chart
+      </button>
       <table style={styles.table}>
         <thead>
           <tr>
             <th style={styles.th}>ID</th>
             <th style={styles.th}>Name</th>
             <th style={styles.th}>Image</th>
-            <th style={styles.th}>Distrubiteur</th>
+            <th style={styles.th}>Distributor</th>
             <th style={styles.th}>Quantity</th>
             <th style={styles.th}>Edit</th>
             <th style={styles.th}>Delete</th>
@@ -95,32 +97,85 @@ export default function Stock() {
                 <td style={styles.td}>{product.id}</td>
                 <td style={styles.td}>{product.name}</td>
                 <td style={styles.td}>
-                  <img src={`${process.env.PUBLIC_URL}${product.image}`} alt={product.name} style={{ width: '50px' }} />
+                  <img
+                    src={`${process.env.PUBLIC_URL}${product.image}`}
+                    alt={product.name}
+                    style={{ width: '50px' }}
+                  />
                 </td>
                 <td style={styles.td}>{product.distrubiteur}</td>
                 <td style={styles.td}>{product.qt}</td>
-                <td style={styles.td}><CiEdit onClick={() => handleEdit(product)} style={styles.icon} size={30} /></td>
-                <td style={styles.td}><MdDeleteForever onClick={() => handleDelete(product.id)} style={styles.icon} size={30} /></td>
+                <td style={styles.td}>
+                  <button
+                    aria-label="Edit Product"
+                    onClick={() => handleEdit(product)}
+                    style={styles.icon}
+                  >
+                    <CiEdit size={30} />
+                  </button>
+                </td>
+                <td style={styles.td}>
+                  <button
+                    aria-label="Delete Product"
+                    onClick={() => handleDelete(product.id)}
+                    style={styles.icon}
+                  >
+                    <MdDeleteForever size={30} />
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td style={styles.td} colSpan="4">No products available</td>
+              <td style={styles.td} colSpan="4">
+                No products available
+              </td>
             </tr>
           )}
         </tbody>
       </table>
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '20px'}}>
-        <button style={{ backgroundColor: '#4CAF50', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer' }} onClick={() => setShowForm(true)}>Add Product</button>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          marginTop: '20px',
+        }}
+      >
+        <button
+          style={{
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            padding: '8px 16px',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+          onClick={() => setShowForm(true)}
+        >
+          Add Product
+        </button>
       </div>
       {isEditing && selectedProduct && (
         <div style={styles.overlay}>
-          <UpdateForm product={selectedProduct} handleUpdate={handleUpdate} onClose={() => setIsEditing(false)} />
+          <UpdateForm
+            product={selectedProduct}
+            handleUpdate={handleUpdate}
+            onClose={() => setIsEditing(false)}
+          />
         </div>
       )}
-      {showForm && <div  style={styles.overlay}> <AddProduct handleAdd={handleAdd}/></div>}
-      {showChart && <div  style={styles.overlay}> <PieChart setShowChart={setShowChart} /></div>}
+      {showForm && (
+        <div style={styles.overlay}>
+          <AddProduct handleAdd={handleAdd} />
+        </div>
+      )}
+      {showChart && (
+        <div style={styles.overlay}>
+          <PieChart setShowChart={setShowChart} />
+        </div>
+      )}
     </div>
   );
 }
-
